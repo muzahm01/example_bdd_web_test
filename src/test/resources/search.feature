@@ -8,4 +8,4 @@ Feature: search and verify item
     And clicked on search button
     And sort results as Price High to Low
     And click on second item
-    Then verify product topic contains text "Nikon"
+    Then verify product topic contains text "Nikon D3X"
