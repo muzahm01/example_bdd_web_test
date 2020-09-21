@@ -65,23 +65,20 @@ public class SearchSteps {
     @And("^I sort results as \"([^\"]*)\"$")
     public void shouldSortSearchResult(String sortOption) throws Throwable {
         // select the sorting option from drop down
-        new Select(driver.findElement(By.id("sort"))).selectByVisibleText(sortOption);
+        driver.findElement(By.cssSelector(".a-dropdown-prompt")).click();//new Select(driver.findElement(By.id("a-autoid-0-announce"))).selectByVisibleText(sortOption);
     }
 
     @And("^I click on second item$")
     public void shouldClickOnSecondItem() throws Throwable {
-        // wait until page is reload and sorted list is shown. this will check the presence of sort message.
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[@id='centerPlus']/h3")));
-        // click on second item, you can change item number by changing "result_1" to "result_0-any positive integer"
-        driver.findElement(By.xpath("//li[@id='result_1']/div/div[2]/div/a/h2")).click();
+        driver.findElement(By.id("s-result-sort-select_2")).click();
     }
 
     @Then("^I verify product topic contains text \"([^\"]*)\"$")
     public void shouldVerifyTextOfItemTopic(String verifyText) {
         try {
             // verify the product and close browser
-            assertTrue("Product topic does not contain provide key", driver.findElement(By.id("productTitle")).getText().contains(verifyText));
-            driver.close();
+            assertTrue("Product topic does not contain provide key",
+                    driver.findElement(By.id("productTitle")).getText().contains(verifyText));
         } catch (AssertionError error) {
 
             Assert.fail(String.valueOf(error));
