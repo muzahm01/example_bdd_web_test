@@ -16,7 +16,6 @@ import static org.junit.Assert.assertTrue;
 
 
 // this class is mapping of steps to test cases.
-
 public class SearchSteps {
     WebDriver driver;
 
@@ -25,22 +24,22 @@ public class SearchSteps {
         System.setProperty("webdriver.chrome.driver", "C:\\chromedriver_win32\\chromedriver.exe");
         driver = new ChromeDriver();
         driver.manage().timeouts().implicitlyWait(40, TimeUnit.SECONDS);
-        driver.manage().timeouts().pageLoadTimeout(40,TimeUnit.SECONDS);
+        driver.manage().timeouts().pageLoadTimeout(40, TimeUnit.SECONDS);
     }
 
-    @When("^I navigate to \"(.*?)\"$")
+    @When("^navigate to \"(.*?)\"$")
     public void shouldNavigate(String url) {
         driver.navigate().to(url);
     }
 
-    @And("^I verify page title \"(.*?)\" to confirm the site$")
+    @And("^verify page title \"(.*?)\" to confirm the site$")
     public void shouldVerifyTitle(String title) {
         // verify the page by its title
         assertTrue("website is not opened", driver.getTitle().contains(title));
 
     }
 
-    @And("^I enter the search key \"(.*?)\"$")
+    @And("^enter the search key \"(.*?)\"$")
     public void shouldEnterSearchKey(String searchKey) {
         // clear if anything already in search bar
         driver.findElement(By.id("twotabsearchtextbox")).clear();
@@ -48,41 +47,39 @@ public class SearchSteps {
         driver.findElement(By.id("twotabsearchtextbox")).sendKeys(searchKey);
     }
 
-    @And("^I clicked on search button$")
+    @And("^clicked on search button$")
     public void shouldClickOnSearchButton() {
         // click on search button
         driver.findElement(By.id("twotabsearchtextbox")).sendKeys(Keys.ENTER);
 
     }
 
-    @And("^I sort results as \"(.*?)\"$")
-    public void shouldSortSearchResult(String sortOption) {
+    @And("^sort results as Price High to Low$")
+    public void shouldSortSearchResult() {
         // select the sorting option from drop down
         driver.findElement(By.cssSelector(".a-dropdown-prompt")).click();
-        //new Select(driver.findElement(By.id("a-autoid-0-announce"))).selectByVisibleText(sortOption);
-    }
-
-    @And("^I click on second item$")
-    public void shouldClickOnSecondItem()  {
         driver.findElement(By.id("s-result-sort-select_2")).click();
     }
 
-    @Then("^I verify product topic contains text \"(.*?)\"$")
+    @And("^click on second item$")
+    public void shouldClickOnSecondItem() {
+        // get the elements with heading 2 tag name and store them in a list.
+        List<WebElement> myTags = driver.findElements(By.tagName("h2"));
+        // select second item from the list and link on it.
+        myTags.get(1).click();
+    }
+
+    @Then("^verify product topic contains text \"(.*?)\"$")
     public void shouldVerifyTextOfItemTopic(String verifyText) {
         try {
             // verify the product and close browser
-            //assertTrue("Product topic does not contain provide key",
-              //      driver.findElement(By.id("productTitle")).getText().contains(verifyText));
-            List<WebElement> myTags =  driver.findElements(By.tagName("h2"));
-            for(int i = 0; i < myTags.size(); i++) {
-                System.out.println(myTags.get(i).getText());
-                System.out.println("\n line break \n");
-            }
+            WebElement productTitle = driver.findElement(By.id("productTitle"));
+            assertTrue("Second product title does not contains text we are looking for, so failing the testcase ",
+                    productTitle.getText().contains(verifyText));
         } catch (AssertionError error) {
 
             Assert.fail(String.valueOf(error));
-        }
-        finally {
+        } finally {
             driver.close();
             driver.quit();
         }
