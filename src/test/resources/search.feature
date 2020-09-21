@@ -1,6 +1,5 @@
 Feature: search and verify item
 # to test amazon.com for nikon camera
-  @acceptance
   Scenario: open amazon.com and search for nikon.com
     Given Browser is opened
     When I navigate to "http://www.amazon.com/"
